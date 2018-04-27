@@ -14,10 +14,7 @@ Enclose the region not to be rendered within a `void`-block. Subsection to be re
 <ul>{% void %}
 {% assign sorted_pages = site.pages | sort: "title"  %}
 {% for p in sorted_pages %}
-    {% assign navtitle = p.navtitle %}
-    {% if navtitle == nil %}
-        {% assign navtitle = p.title %}
-    {% endif %}
+    {{% assign navtitle = p.navtitle | default: p.title %}
     {% if navtitle != nil %}{% bang %}
         <li>{{ navtitle | escape }}</li>{% endbang %}
     {% endif %}
@@ -41,10 +38,7 @@ Without `jekyll-void`:
 <ul>
 {% assign sorted_pages = site.pages | sort: "title"  %}
 {% for p in sorted_pages %}
-    {% assign navtitle = p.navtitle %}
-    {% if navtitle == nil %}
-        {% assign navtitle = p.title %}
-    {% endif %}
+    {% assign navtitle = p.navtitle | default: p.title %}
     {% if navtitle != nil %}
         <li>{{ navtitle | escape }}</li>
     {% endif %}
@@ -58,25 +52,19 @@ maybe rendered as
 
     
     
-    
 
-    
-    
-    
-
-    
     
     
 
     
     
+
+    
     
 
     
     
-    
 
-    
     
     
         <li>Title 1</li>
@@ -84,11 +72,9 @@ maybe rendered as
 
     
     
-    
         <li>Title 2</li>
     
 
-    
     
     
         <li>Title 3</li>
