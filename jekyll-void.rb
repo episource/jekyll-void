@@ -1,43 +1,42 @@
 module Jekyll
   module Void
     BANGS_KEY = Object.new
-  
+
     class VoidBlock < Liquid::Block
-    @@level = 0
-    
+      @@level = 0
+
       def initialize(tag_name, text, tokens)
-         super
-      end
-    
-      def render(context)
-        bangs = context.find_variable(BANGS_KEY)
-        if bangs.nil?
-            bangs = []
-            context[BANGS_KEY] = bangs
-        end
-        
         super
-        rendered = bangs.join("")
-        bangs.clear
-        
-        rendered
+      end
+
+      def render(context)
+        context.stack do
+          bangs = []
+          context[BANGS_KEY] = bangs
+
+          super
+          rendered = bangs.join("")
+          bangs.clear
+
+          rendered
+        end
       end
     end
     class BangBlock < Liquid::Block
-        @@level = 0
-    
+      @@level = 0
+
       def initialize(tag_name, text, tokens)
-         super
+        super
       end
-    
+
       def render(context)
         rendered = super
-        
+
         bangs = context.find_variable(BANGS_KEY)
         unless bangs.nil?
-            bangs.push(rendered)
+          bangs.push(rendered)
         end
-        
+
         rendered
       end
     end
